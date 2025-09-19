@@ -58,6 +58,14 @@
                 stroke-width: 2px;
             }
 
+            // NOTE: Use a slightly larger size for raster image icons only
+            .navIconImg {
+                width: 32px;
+                height: 32px;
+                object-fit: contain;
+                display: block;
+            }
+
             .active {
                 background-color: var(--background-color-900);
             }

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './style/main.scss';
 import { initializePWA, setupInstallPrompt } from './utils/pwa';
+import './services/localstorage'
 
 const initApp = async () => {
   setupInstallPrompt();

@@ -37,15 +37,15 @@ export const UploadFileFunction = () => {
         if (!file) return;
 
         // Basic validation: size and type
-        const maxBytes = 10 * 1024 * 1024; // 10MB
-        const allowed = ['application/pdf', 'image/jpeg', 'image/png'];
+        const maxBytes = 10 * 1024 * 1024; // 1MB
+        const allowed = ['image/jpeg', 'image/png'];
         if (file.size > maxBytes) {
             console.warn('File exceeds 10MB limit.');
             event.target.value = '';
             return;
         }
         if (!allowed.includes(file.type)) {
-            console.warn('Only PDF, JPG, or PNG are allowed.');
+            console.warn('Only JPG or PNG are allowed.');
             event.target.value = '';
             return;
         }
@@ -57,12 +57,13 @@ export const UploadFileFunction = () => {
         // Create object URL and remember to revoke it on cleanup
         const url = URL.createObjectURL(file);
         const fileMeta = {
+            file, // store the actual File object here
             name: file.name,
             size: file.size,
             type: file.type,
-            url,
-        };
-        dispatch(setCurrentFile({ file: fileMeta }));
+            url: URL.createObjectURL(file)
+        }
+        dispatch(setCurrentFile(fileMeta))
         setChooseFile(true);
     };
 

@@ -5,6 +5,7 @@ import { ResidenciesFunction } from './ResidenciesFunction'
 import Input from '@/reusable/Input'
 import Button from '@/reusable/Button'
 import { Plus, ArrowLeft, ArrowRight, House } from 'lucide-react'
+import { useState, useEffect } from 'react'
 
 const Residencies = () => {
     const {
@@ -20,6 +21,36 @@ const Residencies = () => {
         removeAddress,
         updatePrimaryResidence,
     } = ResidenciesFunction();
+
+    const [storedResidenciesData, setStoredResidenciesData] = useState({})
+
+    useEffect(() => {
+        const data = localStorage.getItem('residenciesData')
+        if (data) {
+            try {
+                const parsed = JSON.parse(data)
+                setStoredResidenciesData(parsed)
+                if (parsed.primaryResidence) {
+                    updatePrimaryResidence(parsed.primaryResidence)
+                }
+                if (parsed.otherAddresses) {
+                    parsed.otherAddresses.forEach(addr => {
+                        updateAddress(addr.id, addr.value)
+                    })
+                }
+            } catch {
+                setStoredResidenciesData({})
+            }
+        }
+    }, [])
+
+    const handleNext = () => {
+        localStorage.setItem(
+            'residenciesData',
+            JSON.stringify({ primaryResidence, otherAddresses })
+        )
+        navigate('/wizard/upload-file')
+    }
 
     return (
         <div className={styles.residenciesContainer}>
@@ -120,7 +151,7 @@ const Residencies = () => {
                     ) : (
                         <Button
                             variant="primary"
-                            onClick={() => navigate('/wizard/upload-file')}
+                            onClick={handleNext}
                         >
                             Save
                         </Button>

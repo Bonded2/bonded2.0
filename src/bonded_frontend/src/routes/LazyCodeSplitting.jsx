@@ -170,7 +170,7 @@ export const Timeline = lazy(() =>
 );
 
 export const OpenChat = lazy(() =>
-    import("@/components/dashboard/OpenChat")
+    import("@/components/dashboard/openchat/OpenChat")
 );
 
 export const Notification = lazy(() =>
@@ -219,6 +219,14 @@ export const ProfileInformation = lazy(() =>
 
 export const Setting = lazy(() =>
     import("@/components/dashboard/settings/Setting")
+);
+
+export const ChatMessage = lazy(() =>
+    import("@/components/dashboard/openchat/ChatMessage")
+);
+
+export const ChatList = lazy(() =>
+    import("@/components/dashboard/openchat/ChatList")
 );
 
 

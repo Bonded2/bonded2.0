@@ -55,6 +55,8 @@ import {
   InvitationEmail,
   ProfileInformation,
   Setting,
+  ChatMessage,
+  ChatList,
 } from "./LazyCodeSplitting";
 // import { SessionProvider } from "./SessionProvider"
 // import AccessProvider from "./AccessProvider";
@@ -132,6 +134,8 @@ const AppRoutes = () => {
                   <Route path="photo-selection" element={<PhotoSelection />} />
                   <Route path="profile-information" element={<ProfileInformation />} />
                   <Route path="settings" element={<Setting />} />
+                  <Route path="chat-message" element={<ChatMessage />} />
+                  <Route path="chat-list" element={<ChatList />} />
                 </Route>
 
               </Route>

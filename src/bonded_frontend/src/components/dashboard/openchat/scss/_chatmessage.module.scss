@@ -1,0 +1,596 @@
+@use "@/style/_variables.scss" as *;
+
+// ANCHOR: Chat Message Container
+.chatContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+// ANCHOR: Chat Header
+.chatHeader {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color-400);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    position: relative;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.backButton {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    color: var(--front-color-700);
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: var(--background-color-1200);
+    }
+}
+
+.participantInfo {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    margin-left: 12px;
+}
+
+.avatarContainer {
+    position: relative;
+    margin-right: 12px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.statusIndicator {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid white;
+
+    &.online {
+        background-color: var(--green-color);
+    }
+
+    &.busy {
+        background-color: #f59e0b; // TODO: Add orange color variable to _variables.scss
+    }
+
+    &.offline {
+        background-color: var(--gray-color-100);
+    }
+}
+
+.participantDetails {
+    flex: 1;
+}
+
+.participantName {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--front-color-700);
+    margin: 0 0 2px 0;
+}
+
+.typingStatus {
+    font-size: 12px;
+    color: var(--blue-color-700);
+    margin: 0;
+    font-style: italic;
+}
+
+.onlineStatus {
+    font-size: 12px;
+    color: var(--front-color-200);
+    margin: 0;
+}
+
+.headerActions {
+    display: flex;
+    gap: 8px;
+}
+
+.actionButton {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    color: var(--front-color-700);
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: var(--background-color-1200);
+    }
+}
+
+// ANCHOR: Messages Container
+.messagesContainer {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 16px 8px;
+    min-height: 0;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: var(--border-color-400);
+        border-radius: 2px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: var(--gray-color-200);
+    }
+}
+
+.messagesList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    flex: 1;
+    justify-content: flex-end;
+    padding-bottom: 8px;
+}
+
+// ANCHOR: Message Bubbles
+.messageBubble {
+    max-width: 75%;
+    word-wrap: break-word;
+    word-break: break-word;
+    width: fit-content;
+
+    &.sent {
+        align-self: flex-end;
+        margin-left: auto;
+        margin-right: 0;
+    }
+
+    &.received {
+        align-self: flex-start;
+        margin-right: auto;
+        margin-left: 0;
+    }
+
+    &.system {
+        align-self: center;
+        text-align: center;
+        max-width: 90%;
+    }
+}
+
+.messageContent {
+    padding: 12px 16px;
+    border-radius: 18px;
+    position: relative;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.messageBubble.sent .messageContent {
+    background: var(--blue-color-700);
+    color: white;
+    border-bottom-right-radius: 6px;
+}
+
+.messageBubble.received .messageContent {
+    color: var(--front-color-700);
+    border-bottom-left-radius: 6px;
+    border: 1px solid var(--border-color-400);
+}
+
+.messageBubble.system .messageContent {
+    background: transparent;
+    color: var(--front-color-200);
+    font-size: 12px;
+    font-style: italic;
+    padding: 8px 12px;
+}
+
+.messageText {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.messageFooter {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.messageTime {
+    font-size: 11px;
+    opacity: 0.7;
+}
+
+.messageBubble.sent .messageTime {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.messageBubble.received .messageTime {
+    color: var(--front-color-200);
+}
+
+.messageStatus {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+// ANCHOR: Message Input
+.messageInput {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-top: 1px solid var(--border-color-400);
+    gap: 12px;
+    position: relative;
+    flex-shrink: 0;
+    z-index: 10;
+    width: 100%;
+
+    // ANCHOR: Desktop responsive
+    @include respond-up(desktop) {
+        padding: 20px 24px;
+        gap: 16px;
+    }
+
+    // ANCHOR: Tablet responsive
+    @include respond-between(tablet, desktop) {
+        padding: 18px 20px;
+        gap: 14px;
+    }
+
+    // ANCHOR: Mobile responsive
+    @include respond-down(tablet) {
+        padding: 14px 16px;
+        gap: 10px;
+    }
+
+    // ANCHOR: Small mobile responsive
+    @include respond-down(mobile) {
+        padding: 12px 14px;
+        gap: 8px;
+    }
+
+    // ANCHOR: Extra small mobile responsive
+    @include respond-down(small) {
+        padding: 10px 12px;
+        gap: 6px;
+    }
+}
+
+.attachButton {
+    width: 40px;
+    height: 40px;
+    border: none;
+    color: var(--front-color-200);
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+
+    // ANCHOR: Desktop responsive
+    @include respond-up(desktop) {
+        width: 44px; // ANCHOR: Larger button for desktop
+        height: 44px; // ANCHOR: Larger button for desktop
+    }
+
+    // ANCHOR: Small mobile responsive
+    @include respond-down(mobile) {
+        width: 36px; // ANCHOR: Smaller button for small mobile
+        height: 36px; // ANCHOR: Smaller button for small mobile
+    }
+
+    // ANCHOR: Extra small mobile responsive
+    @include respond-down(small) {
+        width: 32px; // ANCHOR: Minimal button size for extra small screens
+        height: 32px; // ANCHOR: Minimal button size for extra small screens
+    }
+
+    &:hover {
+        filter: brightness(1.1);
+    }
+}
+
+.inputContainer {
+    flex: 1;
+    position: relative;
+    border: 1px solid var(--border-color-400);
+    border-radius: 22px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    // ANCHOR: Desktop responsive
+    @include respond-up(desktop) {
+        padding: 10px 16px; // ANCHOR: Increased padding for desktop
+        gap: 12px; // ANCHOR: Increased gap for desktop
+        border-radius: 24px; // ANCHOR: Slightly larger border radius
+    }
+
+    // ANCHOR: Tablet responsive
+    @include respond-between(tablet, desktop) {
+        padding: 9px 14px; // ANCHOR: Medium padding for tablet
+        gap: 10px; // ANCHOR: Medium gap for tablet
+    }
+
+    // ANCHOR: Small mobile responsive
+    @include respond-down(mobile) {
+        padding: 6px 10px; // ANCHOR: Reduced padding for small mobile
+        gap: 6px; // ANCHOR: Reduced gap for small mobile
+        border-radius: 20px; // ANCHOR: Slightly smaller border radius
+    }
+
+    // ANCHOR: Extra small mobile responsive
+    @include respond-down(small) {
+        padding: 5px 8px; // ANCHOR: Minimal padding for extra small screens
+        gap: 4px; // ANCHOR: Minimal gap for extra small screens
+        border-radius: 18px; // ANCHOR: Smaller border radius for small screens
+    }
+}
+
+.textInput {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 14px;
+    color: var(--front-color-700);
+    padding: 4px 0;
+
+    // ANCHOR: Desktop responsive
+    @include respond-up(desktop) {
+        font-size: 16px; // ANCHOR: Larger font size for desktop
+        padding: 6px 0; // ANCHOR: Increased padding for desktop
+    }
+
+    // ANCHOR: Tablet responsive
+    @include respond-between(tablet, desktop) {
+        font-size: 15px; // ANCHOR: Medium font size for tablet
+        padding: 5px 0; // ANCHOR: Medium padding for tablet
+    }
+
+    // ANCHOR: Small mobile responsive
+    @include respond-down(mobile) {
+        font-size: 13px; // ANCHOR: Smaller font size for small mobile
+        padding: 3px 0; // ANCHOR: Reduced padding for small mobile
+    }
+
+    // ANCHOR: Extra small mobile responsive
+    @include respond-down(small) {
+        font-size: 12px; // ANCHOR: Minimal font size for extra small screens
+        padding: 2px 0; // ANCHOR: Minimal padding for extra small screens
+    }
+
+    &::placeholder {
+        color: var(--front-color-200);
+    }
+}
+
+.inputActions {
+    display: flex;
+    gap: 4px;
+
+    // ANCHOR: Desktop responsive
+    @include respond-up(desktop) {
+        gap: 6px; // ANCHOR: Increased gap for desktop
+    }
+
+    // ANCHOR: Small mobile responsive
+    @include respond-down(mobile) {
+        gap: 3px; // ANCHOR: Reduced gap for small mobile
+    }
+
+    // ANCHOR: Extra small mobile responsive
+    @include respond-down(small) {
+        gap: 2px; // ANCHOR: Minimal gap for extra small screens
+    }
+}
+
+.inputAction {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: var(--front-color-200);
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+
+    // ANCHOR: Desktop responsive
+    @include respond-up(desktop) {
+        width: 36px; // ANCHOR: Larger button for desktop
+        height: 36px; // ANCHOR: Larger button for desktop
+    }
+
+    // ANCHOR: Small mobile responsive
+    @include respond-down(mobile) {
+        width: 28px; // ANCHOR: Smaller button for small mobile
+        height: 28px; // ANCHOR: Smaller button for small mobile
+    }
+
+    // ANCHOR: Extra small mobile responsive
+    @include respond-down(small) {
+        width: 24px; // ANCHOR: Minimal button size for extra small screens
+        height: 24px; // ANCHOR: Minimal button size for extra small screens
+    }
+
+    &:hover {
+        background-color: var(--gray-color-300);
+    }
+}
+
+.sendButton {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: var(--blue-color-700);
+    color: white;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    // ANCHOR: Desktop responsive
+    @include respond-up(desktop) {
+        width: 44px; // ANCHOR: Larger button for desktop
+        height: 44px; // ANCHOR: Larger button for desktop
+    }
+
+    // ANCHOR: Small mobile responsive
+    @include respond-down(mobile) {
+        width: 36px; // ANCHOR: Smaller button for small mobile
+        height: 36px; // ANCHOR: Smaller button for small mobile
+    }
+
+    // ANCHOR: Extra small mobile responsive
+    @include respond-down(small) {
+        width: 32px; // ANCHOR: Minimal button size for extra small screens
+        height: 32px; // ANCHOR: Minimal button size for extra small screens
+    }
+
+    &:hover:not(:disabled) {
+        background: var(--blue-color-600);
+        transform: scale(1.05);
+    }
+
+    &:disabled {
+        background: var(--gray-color-200);
+        cursor: not-allowed;
+        transform: none;
+    }
+}
+
+// ANCHOR: Error State
+.errorMessage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    padding: 20px;
+
+    p {
+        font-size: 18px;
+        color: var(--front-color-200);
+        margin-bottom: 20px;
+    }
+}
+
+.backToChats {
+    padding: 12px 24px;
+    background: var(--blue-color-700);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background: var(--blue-color-600);
+    }
+}
+
+// ANCHOR: Responsive Design
+@include respond-up(desktop) {
+    .messageBubble {
+        max-width: 85%; // Increased to utilize more space
+    }
+}
+
+@include respond-between(tablet, desktop) {
+    .messageBubble {
+        max-width: 90%; // Increased to utilize more space
+    }
+}
+
+@media (max-width: 480px) {
+    .chatHeader {
+        padding: 12px;
+    }
+
+    .messagesContainer {
+        padding: 12px 6px; // Reduced horizontal padding for mobile
+    }
+
+    .messageInput {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .messageBubble {
+        max-width: 65%;
+    }
+
+    .participantName {
+        font-size: 14px;
+    }
+
+    .messageText {
+        font-size: 13px;
+    }
+}
+
+// ANCHOR: Animation for new messages
+.messageBubble {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

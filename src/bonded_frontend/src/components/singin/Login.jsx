@@ -1,6 +1,7 @@
 import styles from './scss/_login.module.scss'
 import nfid from '@/assets/login/nfid.webp'
 import nns from '@/assets/login/nns.webp'
+import ii from '@/assets/login/ii.png'
 import logo3 from '@/assets/logo/logo3-dark.png'
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -21,6 +22,9 @@ const Login = () => {
         authenticatedActor,
         principalId,
         userData,
+        handleLoginII,
+        isSigningInII,
+        setSignInIIError,
         handleLoginNNS,
         handleLoginNFID,
         isSigningInNNS,
@@ -78,12 +82,21 @@ const Login = () => {
                 <div className={styles.authButtons}>
                     <Button
                         variant="outline"
+                        icon={ii}
+                        className={styles.authButton}
+                        onClick={handleLoginII}
+                    >
+                        {isSigningInII ? (<>Authenticating</>) : (
+                            <> Sign in with Internet Identity </>)}
+                    </Button>
+                    <Button
+                        variant="outline"
                         icon={nfid}
                         className={styles.authButton}
                         onClick={handleLoginNFID}
                     >
                         {isSigningInNFID ? (<>Authenticating</>) : (
-                                <> Sign in with your email account </>)}
+                                <> Sign in with NFID </>)}
                     </Button>
                     <Button
                         variant="outline"

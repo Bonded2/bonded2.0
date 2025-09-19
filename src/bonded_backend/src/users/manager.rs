@@ -21,9 +21,9 @@ impl UsersManager {
     }
 
     pub fn create_user(&mut self, caller: Principal, provider: String, inviter: Option<String>) -> Result<User, String> {
-        if self.users.contains_key(&caller) {
-            return Err("User information has already been registered.".into());
-        }
+        // if self.users.contains_key(&caller) {
+        //     return Err("User information has already been registered.".into());
+        // }
         let now = ic_cdk::api::time() as i64;
         let caller_text = caller.to_text();
         let short_caller: String = caller_text.chars().take(15).collect();
@@ -82,7 +82,7 @@ impl UsersManager {
             }
         }
 
-        self.users.insert(caller, user.clone());
+        self.users.insert(caller, user.clone());    
         Ok(user)
     }
 

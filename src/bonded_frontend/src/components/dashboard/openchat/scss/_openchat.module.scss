@@ -1,0 +1,295 @@
+@use "@/style/_variables.scss" as *;
+
+.openChat {
+    height: calc(100vh - 22vh);
+    height: calc(100dvh - 22vh);
+    background-color: var(--background-color-100);
+    padding: 0; // ANCHOR: Removed horizontal padding to allow full-width chat
+    overflow-x: hidden;
+    position: relative;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    scrollbar-width: none;
+
+    -ms-overflow-style: none;
+
+    // ANCHOR: Desktop
+    @include respond-up(desktop) {
+        height: calc(100vh - 20vh);
+        height: calc(100dvh - 20vh);
+        padding: 0;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    // ANCHOR: Tablet
+    @include respond-between(tablet, desktop) {
+        height: calc(100vh - 20vh);
+        height: calc(100dvh - 20vh);
+        padding: 0;
+
+        // ANCHOR: Mobile
+        @include respond-down(tablet) {
+            padding: 0; // ANCHOR: Removed horizontal padding for full-width chat
+        }
+
+        // ANCHOR: Small mobile
+        @include respond-down(mobile) {
+            padding: 0; // ANCHOR: Removed horizontal padding for full-width chat
+        }
+
+        // ANCHOR: Small mobile
+        @include respond-down(small) {
+            padding: 0; // ANCHOR: Removed horizontal padding for full-width chat
+        }
+    }
+
+    // ANCHOR: Chat List Styles
+    .chatListContainer {
+        background: white;
+        border-radius: 12px;
+        box-shadow:
+            0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        padding: 24px;
+        margin: 20px auto;
+        max-width: 400px;
+        min-height: 600px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chatListHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .chatListTitle {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--front-color-700);
+        margin: 0;
+    }
+
+    .newChatButton {
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 8px;
+        background-color: var(--background-color-1200);
+        color: var(--front-color-200);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: var(--gray-color-300);
+            color: var(--front-color-100);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+
+    .searchContainer {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .searchIcon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--front-color-200);
+        z-index: 1;
+    }
+
+    .searchInput {
+        width: 100%;
+        height: 44px;
+        padding: 0 12px 0 40px;
+        border: 1px solid var(--border-color-400);
+        border-radius: 22px;
+        background-color: var(--background-color-1200);
+        font-size: 14px;
+        color: var(--front-color-200);
+        outline: none;
+        transition: all 0.2s ease;
+
+        &::placeholder {
+            color: var(--front-color-200);
+        }
+
+        &:focus {
+            border-color: var(--blue-color-700);
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+    }
+
+    .chatListWrapper {
+        flex: 1;
+        overflow-y: auto;
+        border-radius: 8px;
+
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--border-color-400);
+            border-radius: 2px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-color-200);
+        }
+    }
+
+    // ANCHOR: Custom Chat Item Styles
+    .chatItem {
+        display: flex;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--background-color-1200);
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &:hover {
+            background-color: var(--background-color-1200);
+        }
+    }
+
+    .avatarContainer {
+        position: relative;
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
+
+    .avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--background-color-1200);
+    }
+
+    .chatContent {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .chatHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 4px;
+    }
+
+    .chatTitle {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--front-color-700);
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .chatTime {
+        font-size: 12px;
+        color: var(--front-color-200);
+        margin: 0;
+        white-space: nowrap;
+        margin-left: 8px;
+    }
+
+    .chatFooter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chatSubtitle {
+        font-size: 14px;
+        color: var(--front-color-200);
+        margin: 0;
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .unreadBadge {
+        background-color: var(--blue-color-700);
+        color: white;
+        border-radius: 12px;
+        min-width: 20px;
+        height: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 8px;
+        padding: 0 6px;
+    }
+
+    // ANCHOR: Status indicators (green/orange dots)
+    .statusIndicator {
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 2px solid white;
+
+        &.online {
+            background-color: var(--green-color);
+        }
+
+        &.busy {
+            background-color: #f59e0b; // TODO: Add orange color variable to _variables.scss
+        }
+
+        &.offline {
+            background-color: var(--gray-color-100);
+        }
+    }
+
+    // ANCHOR: Responsive adjustments
+    @media (max-width: 480px) {
+        .chatListContainer {
+            margin: 10px;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .chatListTitle {
+            font-size: 20px;
+        }
+
+        .newChatButton {
+            width: 36px;
+            height: 36px;
+        }
+    }
+}

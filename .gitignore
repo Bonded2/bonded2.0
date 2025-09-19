@@ -22,6 +22,10 @@ dist/
 .svelte-kit/
 src/bonded_frontend/src/services/nfid.js
 src/bonded_frontend/src/services/nns.js
+src/bonded_frontend/src/services/ii.js
+src/bonded_frontend/src/services/nfid.ts
+src/bonded_frontend/src/services/nns.ts
+src/bonded_frontend/src/services/ii.ts
 
 # environment variables
 .env

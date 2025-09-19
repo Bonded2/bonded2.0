@@ -5,6 +5,7 @@ import Dropdown from '@/reusable/Dropdown'
 import { Plus, ArrowLeft, ArrowRight, Flag } from 'lucide-react';
 import Button from '@/reusable/Button';
 import { NationalitiesFunction } from './NationalitiesFunction';
+import { useState, useEffect } from 'react'
 
 const Nationalities = () => {
   const {
@@ -19,6 +20,27 @@ const Nationalities = () => {
     country,
     navigate
   } = NationalitiesFunction();
+
+  const [storedNationalitiesData, setStoredNationalitiesData] = useState({})
+      
+  useEffect(() => {
+    const data = localStorage.getItem('nationalitiesData')
+      if (data) {
+    try {
+      setStoredNationalitiesData(JSON.parse(data))
+    } catch {
+      setStoredNationalitiesData({})
+    }
+  }
+  }, [])
+    
+  const handleNext = () => {
+    localStorage.setItem(
+      'nationalitiesData',
+      JSON.stringify({ selectedNationality })
+    )
+    navigate('/wizard/residencies')
+  }
 
   return (
     <div className={styles.nationalitiesContainer}>
@@ -89,7 +111,7 @@ const Nationalities = () => {
             <Button
               variant="primary"
               className={styles.nationalitiesButton}
-              onClick={() => navigate('/wizard/residencies')}
+              onClick={handleNext}
             >
               Next
             </Button>
@@ -98,7 +120,7 @@ const Nationalities = () => {
               variant="primary"
               className={styles.nationalitiesButton}
               onClick={handleSave}
-              disabled={!selectedNationality || !selectedNationality.name}
+              disabled={!selectedNationality}
             >
               Save
             </Button>

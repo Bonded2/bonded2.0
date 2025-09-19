@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './scss/_uploadfile.module.scss'
 import DotsWizard from '@/components/wizard/DotsWizard'
 import { UploadFileFunction } from './UploadFileFunction'
@@ -8,6 +8,31 @@ import Input from '@/reusable/Input';
 import { useNavigate } from 'react-router-dom';
 import Minicalendar from '@/reusable/Minicalendar';
 import InlineSelect from '@/reusable/InlineSelect';
+
+const dataURLtoBlob = (dataurl) => {
+    const arr = dataurl.split(',')
+    const mime = arr[0].match(/:(.*?);/)[1]
+    const bstr = atob(arr[1])
+    let n = bstr.length
+    const u8arr = new Uint8Array(n)
+    while (n--) u8arr[n] = bstr.charCodeAt(n)
+    return new Blob([u8arr], { type: mime })
+}
+
+// Compress image Blob or File to JPEG base64
+const compressImage = async (fileOrBlob, quality = 0.7, maxWidth = 800) => {
+    const bitmap = await createImageBitmap(fileOrBlob)
+    const scale = bitmap.width > maxWidth ? maxWidth / bitmap.width : 1
+
+    const canvas = document.createElement('canvas')
+    canvas.width = bitmap.width * scale
+    canvas.height = bitmap.height * scale
+
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+
+    return canvas.toDataURL('image/jpeg', quality)
+}
 
 const UploadFile = () => {
   const {
@@ -38,7 +63,6 @@ const UploadFile = () => {
     handleNavigateToStep,
     handleDropdownToggle,
     closeAllDropdowns,
-    handleContinue,
     handleRemoveLastFile,
     formatDate,
     formatDateRange,
@@ -53,6 +77,57 @@ const UploadFile = () => {
     Droplet: <Droplet />,
     ThumbsUp: <ThumbsUp />,
   };
+
+  const [storedFiles, setStoredFiles] = useState([])
+      const [storedFileName, setStoredFileName] = useState(null)
+  
+useEffect(() => {
+    const stored = localStorage.getItem('uploadedFiles')
+    if (stored) {
+        try {
+            setStoredFiles(JSON.parse(stored))
+        } catch {
+            setStoredFiles([])
+        }
+    }
+}, [])
+  
+const handleContinue = async () => {
+    if (!selectedFile) return
+
+    try {
+        let fileToCompress = selectedFile.file || selectedFile
+
+        if (typeof selectedFile === 'string') {
+            fileToCompress = dataURLtoBlob(selectedFile)
+        }
+
+        const compressed = await compressImage(fileToCompress)
+
+        // Save file metadata
+        const newFile = {
+            fileName: selectedFile.name,
+            data: compressed,
+            fileType: selectedFileType,
+            countryCode: selectedCountryCode,
+            dateRange: selectedDateRange
+        }
+
+        const updatedFiles = [...storedFiles, newFile]
+        setStoredFiles(updatedFiles)
+        localStorage.setItem('uploadedFiles', JSON.stringify(updatedFiles))
+
+        // Reset current selection
+        setSelectedFile(null)
+        setChooseFile(false)
+        setHasContinued(true)
+
+    } catch (err) {
+        console.error('Compression error:', err)
+        alert('Failed to process photo. Please try again.')
+    }
+}
+
 
   const fileList = fileListData.map(item => ({
     ...item,
@@ -77,7 +152,7 @@ const UploadFile = () => {
       {chooseFile && !hasContinued ? (
         <div className={styles.selectedFile}>
           <div className={styles.selectedFileHeader}>
-            <p>If you have important documents that aren't available as digital records, you can upload them here to keep your profile complete. Accepted formats include PDF, JPG, PNG with a max file size of 10MB per file</p>
+            <p>If you have important documents that aren't available as digital records, you can upload them here to keep your profile complete. Accepted formats include JPG and PNG with a max file size of 10MB per file</p>
           </div>
 
           <div className={styles.selectedFileContentContainer}>
@@ -214,7 +289,7 @@ const UploadFile = () => {
       ) : hasContinued ? (
         <div className={styles.uploadedFileDisplay}>
           <div className={styles.uploadedFileHeader}>
-            <p>If you have important documents that aren't available as digital records, you can upload them here to keep your profile complete. Accepted formats include PDF, JPG, PNG with a max file size of 10MB per file</p>
+            <p>If you have important documents that aren't available as digital records, you can upload them here to keep your profile complete. Accepted formats include JPG, PNG with a max file size of 10MB per file</p>
           </div>
           <div className={styles.uploadedFileCard}>
             <div className={styles.uploadedFileInfo}>
@@ -291,7 +366,7 @@ const UploadFile = () => {
               </p>
             </div>
             <div>
-              <p>Accepted formats: PDF, JPG, PNG (max 10MB per file).</p>
+              <p>Accepted formats: JPG and PNG (max 10MB per file).</p>
             </div>
           </div>
 
@@ -325,7 +400,7 @@ const UploadFile = () => {
           </Button>
           <Input
             type="file"
-            accept=".pdf,.jpg,.jpeg,.png"
+            accept=".jpg,.jpeg,.png"
             onChange={handleFileSelect}
             className={styles.fileInput}
             id={'global-file-input'}

@@ -5,10 +5,32 @@ import Button from '@/reusable/Button'
 import { EmailFunction } from './EmailFunction'
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react'
 
 const Email = () => {
   const navigate = useNavigate();
   const { email, handleEmailChange } = EmailFunction();
+
+  const [storedEmailData, setStoredEmailData] = useState({})
+  
+      useEffect(() => {
+          const data = localStorage.getItem('emailData')
+          if (data) {
+              try {
+                  setStoredEmailData(JSON.parse(data))
+              } catch {
+                  setStoredEmailData({})
+              }
+          }
+      }, [])
+
+  const handleNext = () => {
+        localStorage.setItem(
+            'emailData',
+            JSON.stringify({ email })
+        )
+        navigate('/wizard/passport')
+    }
 
   return (
     <div className={styles.emailContainer}>
@@ -22,7 +44,7 @@ const Email = () => {
           label="Email"
           type="email"
           id="email"
-          placeholder="Enter your email"
+          placeholder={storedEmailData.email || 'Enter an Email'}
           value={email}
           onChange={handleEmailChange}
         />
@@ -32,7 +54,7 @@ const Email = () => {
         <Button
           variant="primary"
           className={styles.emailButton}
-          onClick={() => navigate('/wizard/passport')}
+          onClick={handleNext}
           disabled={!email}
         >
           Next

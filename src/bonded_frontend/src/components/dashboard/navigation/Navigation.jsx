@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import styles from './scss/_navigation.module.scss'
 import { Link } from 'react-router-dom'
-import { LayoutGrid, List, MessageCircle, Bell, Download } from 'lucide-react';
+import { LayoutGrid, List, Bell, Download } from 'lucide-react';
+import OpenChat from '@/assets/openchat.png';
 
 const Navigation = () => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -9,7 +10,7 @@ const Navigation = () => {
     const items = [
         { Icon: LayoutGrid, to: '/dashboard' },
         { Icon: List, to: '/dashboard/timeline' },
-        { Icon: MessageCircle, to: '/dashboard/open-chat' },
+        { img: OpenChat, to: '/dashboard/open-chat' },
         { Icon: Bell, to: '/dashboard/notification' },
         { Icon: Download, to: '/dashboard/export' },
     ];
@@ -19,7 +20,7 @@ const Navigation = () => {
 
             <div className={styles.navigationContent}>
                 <ul className={styles.navList}>
-                    {items.map(({ Icon, to }, index) => (
+                    {items.map(({ Icon, img, to }, index) => (
                         <li key={index} className={styles.navListItem}>
                             <Link
                                 to={to}
@@ -27,7 +28,11 @@ const Navigation = () => {
                                 onClick={() => setActiveIndex(index)}
                                 aria-current={activeIndex === index ? 'page' : undefined}
                             >
-                                <Icon className={styles.navIcon} />
+                                {Icon ? (
+                                    <Icon className={styles.navIcon} />
+                                ) : (
+                                    <img src={img} alt="Open Chat" className={styles.navIconImg} />
+                                )}
                             </Link>
                         </li>
                     ))}

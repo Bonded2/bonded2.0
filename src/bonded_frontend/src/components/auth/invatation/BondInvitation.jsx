@@ -24,7 +24,7 @@ const BondInvitation = () => {
 
         try {
             const res = await fetch(
-                'https://bonded-mail.reveriontech.workers.dev',
+                'https://bonded-mail.workers.dev',
                 {
                     method: 'POST',
                     headers: {

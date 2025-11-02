@@ -29,7 +29,7 @@ const BondInvitation = () => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1mcnJlenBpZmlrcW11cmF4ZXZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc2NjU1MzQsImV4cCI6MjA3MzI0MTUzNH0.98vi2gqE_vbhN7rYGMgkpyIDuSnJ0SMVhgqEuFn4Cqo`
+                        Authorization: `Bearer PLACEHOLDER_SUPABASE_ANON_KEY_REPLACE_WITH_REAL_KEY`
                     },
                     body: JSON.stringify({
                         inviterName,

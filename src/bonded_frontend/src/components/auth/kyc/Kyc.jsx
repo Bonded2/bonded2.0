@@ -25,7 +25,7 @@ const Kyc = () => {
             setLoading(true)
             setError(null)
 
-            const res = await fetch('https://yoti-eight.vercel.app/yoti/create-session', {
+            const res = await fetch('https://bonded-kyc.vercel.app/yoti/create-session', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userTrackingId: userData?.email || 'guest-user' })
